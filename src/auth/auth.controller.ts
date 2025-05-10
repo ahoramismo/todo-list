@@ -16,6 +16,11 @@ import { AuthGuard } from './auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('register')
+  async register(@Body() body: { username: string; password: string }) {
+    return this.authService.register(body.username, body.password);
+  }
+
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
@@ -26,5 +31,10 @@ export class AuthController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Post('refresh')
+  refreshToken(@Body() body: {refresh_token: string}) {
+    return this.authService.refreshToken(body.refresh_token);
   }
 }
