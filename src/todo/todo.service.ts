@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { Repository } from 'typeorm';
@@ -20,17 +20,19 @@ export class TodoService {
     return this.todoRepo.save(todo);
   }
 
-  async toggle(id: number) {
+  async toggle(id: string) {
     const todo = await this.todoRepo.findOneBy({ id });
 
-    if (!todo) return null;
+    if (!todo) {
+      throw new NotFoundException();
+    }
 
     todo.completed = !todo.completed;
 
     return this.todoRepo.save(todo);
   }
 
-  delete(id: number) {
-    return this.todoRepo.delete(id);
+  async delete(id: string) {
+    return this.todoRepo.delete({ id });
   }
 }

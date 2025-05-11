@@ -25,11 +25,11 @@ export class TodoController {
 
   @Patch(':id/toggle')
   toggle(@Param('id') id: string) {
-    return this.todoService.toggle(+id);
+    return this.todoService.toggle(id);
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.todoService.delete(+id);
+    return this.todoService.delete(id);
   }
 }

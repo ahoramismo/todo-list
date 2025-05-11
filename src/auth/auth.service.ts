@@ -49,7 +49,7 @@ export class AuthService {
   async refreshToken(token: string) {
     try {
       const payload = await this.jwtService.verifyAsync(token);
-      const user = await this.usersService.findOne(payload.sub);
+      const user = await this.usersService.findById(payload.sub);
 
       if (!user || !user.hashedRefreshToken) {
         throw new UnauthorizedException();
