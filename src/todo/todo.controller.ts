@@ -5,9 +5,11 @@ import {
   Body,
   Param,
   Delete,
-  Patch, UseGuards, Request, Req,
+  Patch,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
-import type {Request as ExpressRequest} from 'express'
+import type { Request as ExpressRequest } from 'express';
 import { TodoService } from './todo.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthenticatedUserDto } from '../users/dto/authenticated-user.dto';
@@ -18,13 +20,18 @@ export class TodoController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  findUserTodos(@Request() req: ExpressRequest & { user: AuthenticatedUserDto }) {
+  findUserTodos(
+    @Request() req: ExpressRequest & { user: AuthenticatedUserDto },
+  ) {
     return this.todoService.findAll(req.user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body('title') title: string, @Request() req: ExpressRequest & { user: AuthenticatedUserDto }) {
+  create(
+    @Body('title') title: string,
+    @Request() req: ExpressRequest & { user: AuthenticatedUserDto },
+  ) {
     return this.todoService.create(title, req.user);
   }
 

@@ -5,13 +5,10 @@ services:
       - "3000:3000"
     depends_on:
       - mysql
+    env_file:
+      - .env
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-
+      DB_HOST: mysql
   mysql:
     image: mysql:8
     restart: always
