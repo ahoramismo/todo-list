@@ -9,8 +9,8 @@ export class Todo {
   @Column()
   title: string;
 
-  @Column({ default: false })
-  completed: boolean;
+  @Column({default: 'todo'})
+  state: 'todo' | 'in-progress' | 'done';
 
   @ManyToOne(() => User, (user) => user.todos, {eager: false})
   user: User;

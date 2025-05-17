@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { Repository } from 'typeorm';
 import { AuthenticatedUserDto } from '../users/dto/authenticated-user.dto';
+import { CreateTodoDto } from './dto/create-todo.dto';
 
 @Injectable()
 export class TodoService {
@@ -19,20 +20,8 @@ export class TodoService {
     });
   }
 
-  create(title: string, user: AuthenticatedUserDto) {
-    const todo = this.todoRepo.create({ title, user });
-
-    return this.todoRepo.save(todo);
-  }
-
-  async toggle(id: string) {
-    const todo = await this.todoRepo.findOneBy({ id });
-
-    if (!todo) {
-      throw new NotFoundException();
-    }
-
-    todo.completed = !todo.completed;
+  create(todoItem: CreateTodoDto, user: AuthenticatedUserDto) {
+    const todo = this.todoRepo.create({ ...todoItem, user });
 
     return this.todoRepo.save(todo);
   }

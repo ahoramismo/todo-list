@@ -13,6 +13,7 @@ import type { Request as ExpressRequest } from 'express';
 import { TodoService } from './todo.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthenticatedUserDto } from '../users/dto/authenticated-user.dto';
+import { CreateTodoDto } from './dto/create-todo.dto';
 
 @Controller('todos')
 export class TodoController {
@@ -29,15 +30,10 @@ export class TodoController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   create(
-    @Body('title') title: string,
+    @Body() createTodoDto: CreateTodoDto,
     @Request() req: ExpressRequest & { user: AuthenticatedUserDto },
   ) {
-    return this.todoService.create(title, req.user);
-  }
-
-  @Patch(':id/toggle')
-  toggle(@Param('id') id: string) {
-    return this.todoService.toggle(id);
+    return this.todoService.create(createTodoDto, req.user);
   }
 
   @Delete(':id')
