@@ -14,6 +14,7 @@ import { TodoService } from './todo.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthenticatedUserDto } from '../users/dto/authenticated-user.dto';
 import { CreateTodoDto } from './dto/create-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 
 @Controller('todos')
 export class TodoController {
@@ -34,6 +35,12 @@ export class TodoController {
     @Request() req: ExpressRequest & { user: AuthenticatedUserDto },
   ) {
     return this.todoService.create(createTodoDto, req.user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch(':id')
+  patch(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
+    return this.todoService.update(id, updateTodoDto);
   }
 
   @Delete(':id')
