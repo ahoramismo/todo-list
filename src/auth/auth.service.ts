@@ -16,13 +16,13 @@ export class AuthService {
 
   async register(username: string, password: string) {
     const newUser = await this.usersService.createUser(username, password);
+
     return { message: 'User registered successfully', id: newUser.id };
   }
 
-
-  async signIn(username: string, pass: string) {
+  async signIn({ username, password }: { username: string; password: string }) {
     const user = await this.usersService.findOne(username);
-    const isMatch = await bcrypt.compare(pass, user?.password || '');
+    const isMatch = await bcrypt.compare(password, user?.password || '');
 
     if (!user || !isMatch) {
       throw new UnauthorizedException();
