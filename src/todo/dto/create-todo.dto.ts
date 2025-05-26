@@ -6,4 +6,10 @@ export class CreateTodoDto {
   title: string;
 
   state: 'todo' | 'in-progress' | 'done';
+
+  completed?: boolean;
+  archived?: boolean;
+  order?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

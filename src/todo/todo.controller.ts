@@ -15,6 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthenticatedUserDto } from '../users/dto/authenticated-user.dto';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { ReorderTodosDto } from './dto/reorder-todos.dto';
 
 @Controller('todos')
 export class TodoController {
@@ -37,14 +38,26 @@ export class TodoController {
     return this.todoService.create(createTodoDto, req.user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Patch(':id')
-  patch(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(id, updateTodoDto);
-  }
-
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.todoService.delete(id);
+  }
+
+  // Reorder todos
+  @Patch('reorder')
+  async reorder(@Body() body: ReorderTodosDto) {
+    return this.todoService.reorderTodos(body.ids);
+  }
+
+  // Toggle completed
+  @Patch(':id/toggle-completed')
+  async toggleCompleted(@Param('id') id: string) {
+    return this.todoService.toggleCompleted(id);
+  }
+
+  // Toggle archived
+  @Patch(':id/toggle-archived')
+  async toggleArchived(@Param('id') id: string) {
+    return this.todoService.toggleArchived(id);
   }
 }
