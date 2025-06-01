@@ -43,6 +43,11 @@ export class TodoController {
     return this.todoService.delete(id);
   }
 
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
+    return this.todoService.update(id, updateTodoDto);
+  }
+
   // Reorder todos
   @Patch('reorder')
   async reorder(@Body() body: ReorderTodosDto) {

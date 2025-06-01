@@ -38,6 +38,16 @@ export class TodoService {
     return this.todoRepo.delete({ id });
   }
 
+  async update(id: string, updateTodoDto: UpdateTodoDto) {
+    const todo = await this.todoRepo.findOneBy({ id });
+    if (!todo) {
+      throw new BadRequestException('Todo not found');
+    }
+    const updatedTodo = { ...todo, ...updateTodoDto };
+
+    return this.todoRepo.save(updatedTodo);
+  }
+
   async reorderTodos(ids: string[]) {
     try {
       return this.dataSource.transaction(async (manager) => {
